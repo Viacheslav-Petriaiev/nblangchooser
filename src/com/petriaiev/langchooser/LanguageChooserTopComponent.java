@@ -50,18 +50,18 @@ import org.openide.windows.TopComponent;
  * @author Viacheslav Petriaiev
  */
 @ConvertAsProperties(
-    dtd = "-//com.petriaiev.langchooser//LanguageChooser//EN",
-autostore = false)
+        dtd = "-//com.petriaiev.langchooser//LanguageChooser//EN",
+        autostore = false)
 @TopComponent.Description(
-    preferredID = "LanguageChooserTopComponent",
-//iconBase="SET/PATH/TO/ICON/HERE",
-persistenceType = TopComponent.PERSISTENCE_ALWAYS)
+        preferredID = "LanguageChooserTopComponent",
+        //iconBase="SET/PATH/TO/ICON/HERE",
+        persistenceType = TopComponent.PERSISTENCE_ALWAYS)
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
 @ActionID(category = "Window", id = "com.petriaiev.langchooser.LanguageChooserTopComponent")
-@ActionReference(path = "Menu/Tools" , position = 10000, separatorBefore=9999)
+@ActionReference(path = "Menu/Tools", position = 10000, separatorBefore = 9999)
 @TopComponent.OpenActionRegistration(
-    displayName = "#CTL_LanguageChooserAction",
-preferredID = "LanguageChooserTopComponent")
+        displayName = "#CTL_LanguageChooserAction",
+        preferredID = "LanguageChooserTopComponent")
 public final class LanguageChooserTopComponent extends TopComponent {
 
     private static final String CONF_FILE_NAME = "netbeans.conf";
@@ -69,14 +69,12 @@ public final class LanguageChooserTopComponent extends TopComponent {
     private static final String NB_LOCALE_KEY = "--locale";
     private static final String NB_LOCALE_SEPARATOR = ":";
     private static final String DEFAULT_NETBEANS_OPTIONS_KEY = "netbeans_default_options";
-
     private static final Locale[] LOCALES = new Locale[]{
         new Locale("en"),
         new Locale("ja"),
         new Locale("zh", "CN"),
         new Locale("pt", "BR"),
-        new Locale("ru"),
-    };
+        new Locale("ru"),};
 
     public LanguageChooserTopComponent() {
         setName(NbBundle.getMessage(LanguageChooserTopComponent.class, "CTL_LanguageChooserTopComponent"));
@@ -96,7 +94,7 @@ public final class LanguageChooserTopComponent extends TopComponent {
         languageCB = new javax.swing.JComboBox();
         saveButton = new javax.swing.JButton();
         warningLabel = new javax.swing.JLabel();
-        needShutDown = new javax.swing.JCheckBox();
+        needRestart = new javax.swing.JCheckBox();
 
         languageCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -109,8 +107,8 @@ public final class LanguageChooserTopComponent extends TopComponent {
 
         org.openide.awt.Mnemonics.setLocalizedText(warningLabel, org.openide.util.NbBundle.getMessage(LanguageChooserTopComponent.class, "LanguageChooserTopComponent.warningLabel.text")); // NOI18N
 
-        needShutDown.setSelected(true);
-        org.openide.awt.Mnemonics.setLocalizedText(needShutDown, org.openide.util.NbBundle.getMessage(LanguageChooserTopComponent.class, "LanguageChooserTopComponent.needShutDown.text")); // NOI18N
+        needRestart.setSelected(true);
+        org.openide.awt.Mnemonics.setLocalizedText(needRestart, org.openide.util.NbBundle.getMessage(LanguageChooserTopComponent.class, "LanguageChooserTopComponent.needRestart.text")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -121,7 +119,7 @@ public final class LanguageChooserTopComponent extends TopComponent {
                 .addComponent(languageCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(needShutDown)
+                    .addComponent(needRestart)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(saveButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -137,7 +135,7 @@ public final class LanguageChooserTopComponent extends TopComponent {
                     .addComponent(saveButton)
                     .addComponent(warningLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(needShutDown)
+                .addComponent(needRestart)
                 .addContainerGap(236, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -146,12 +144,12 @@ public final class LanguageChooserTopComponent extends TopComponent {
         final File userDir = Places.getUserDirectory();
         final File userConfigFileDir = new File(userDir, ETC_FOLDER_PATH);
         final File userConfigFile = new File(userConfigFileDir, CONF_FILE_NAME);
-        if(!userConfigFile.exists()) {
+        if (!userConfigFile.exists()) {
             final File netbeansHome = new File(System.getProperty("netbeans.home"));
             final File commonConfigFileDir = new File(netbeansHome.getParentFile(), ETC_FOLDER_PATH);
             final File commonConfigFile = new File(commonConfigFileDir, CONF_FILE_NAME);
             try {
-                copyFile(commonConfigFile, userConfigFile);
+                copyFile(userConfigFile, commonConfigFile);
                 String title = NbBundle.getMessage(LanguageChooserTopComponent.class, "OpenIDE-Module-Name");
                 String message = NbBundle.getMessage(LanguageChooserTopComponent.class, "LC_userConfFileCreated");
                 NotificationDisplayer.getDefault().notify(title, new ImageIcon(), message, null);
@@ -164,32 +162,31 @@ public final class LanguageChooserTopComponent extends TopComponent {
         }
         final Locale locale = LOCALES[languageCB.getSelectedIndex()];
         setLocaleToUserConfigFile(userConfigFile, locale);
-        if(needShutDown.isSelected()) {
+        if (needRestart.isSelected()) {
+            LifecycleManager.getDefault().markForRestart();
             LifecycleManager.getDefault().exit();
         }
     }//GEN-LAST:event_saveButtonActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox languageCB;
-    private javax.swing.JCheckBox needShutDown;
+    private javax.swing.JCheckBox needRestart;
     private javax.swing.JButton saveButton;
     private javax.swing.JLabel warningLabel;
     // End of variables declaration//GEN-END:variables
 
     private void initLocalesCB() {
-        languageCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] {
+        languageCB.setModel(new javax.swing.DefaultComboBoxModel(new String[]{
             LOCALES[0].getDisplayName(LOCALES[0]),
             LOCALES[1].getDisplayName(LOCALES[1]),
             LOCALES[2].getDisplayName(LOCALES[2]),
             LOCALES[3].getDisplayName(LOCALES[3]),
-            LOCALES[4].getDisplayName(LOCALES[4]),
-        }));
+            LOCALES[4].getDisplayName(LOCALES[4]),}));
         int localeIdx = 0;
         final Locale currentLocale = Locale.getDefault();
-        for(int i = 0; i < LOCALES.length; i++) {
-            if(LOCALES[i].getLanguage().equalsIgnoreCase(currentLocale.getLanguage())) {
-                if(currentLocale.getCountry() != null && !currentLocale.getCountry().isEmpty()) {
-                    if(currentLocale.getCountry().equalsIgnoreCase(LOCALES[i].getCountry())) {
+        for (int i = 0; i < LOCALES.length; i++) {
+            if (LOCALES[i].getLanguage().equalsIgnoreCase(currentLocale.getLanguage())) {
+                if (currentLocale.getCountry() != null && !currentLocale.getCountry().isEmpty()) {
+                    if (currentLocale.getCountry().equalsIgnoreCase(LOCALES[i].getCountry())) {
                         localeIdx = i;
                         break;
                     }
@@ -203,7 +200,7 @@ public final class LanguageChooserTopComponent extends TopComponent {
     }
 
     private void copyFile(File sourceFile, File destFile) throws IOException {
-        if(!destFile.exists()) {
+        if (!destFile.exists()) {
             destFile.getParentFile().mkdirs();
             destFile.createNewFile();
         }
@@ -216,10 +213,10 @@ public final class LanguageChooserTopComponent extends TopComponent {
             destination = new FileOutputStream(destFile).getChannel();
             destination.transferFrom(source, 0, source.size());
         } finally {
-            if(source != null) {
+            if (source != null) {
                 source.close();
             }
-            if(destination != null) {
+            if (destination != null) {
                 destination.close();
             }
         }
@@ -231,14 +228,14 @@ public final class LanguageChooserTopComponent extends TopComponent {
             final BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String line;
             final List<String> linesToWrite = new ArrayList<String>();
-            while((line = br.readLine()) !=  null) {
-                if(line.startsWith(DEFAULT_NETBEANS_OPTIONS_KEY)) {
+            while ((line = br.readLine()) != null) {
+                if (line.startsWith(DEFAULT_NETBEANS_OPTIONS_KEY)) {
                     final StringBuilder localeToWriteSb = new StringBuilder(locale.getLanguage());
-                    if(locale.getCountry() != null && !locale.getCountry().isEmpty()) {
+                    if (locale.getCountry() != null && !locale.getCountry().isEmpty()) {
                         localeToWriteSb.append(NB_LOCALE_SEPARATOR).append(locale.getCountry());
                     }
                     String localeToWrite = localeToWriteSb.toString();
-                    if(line.contains(NB_LOCALE_KEY)) {
+                    if (line.contains(NB_LOCALE_KEY)) {
                         line = line.replaceFirst("(" + NB_LOCALE_KEY + "\\s+)(?:[^\\s'\"]+)($|[\\s\"']+)",
                                 "$1" + localeToWrite + "$2");
                     } else {
@@ -252,12 +249,12 @@ public final class LanguageChooserTopComponent extends TopComponent {
             in.close();
             final FileWriter fw = new FileWriter(userConfigFile);
             final PrintWriter pw = new PrintWriter(fw);
-            for(String lineToWrite : linesToWrite) {
+            for (String lineToWrite : linesToWrite) {
                 pw.println(lineToWrite);
             }
             pw.close();
             fw.close();
-        } catch(Exception e) {
+        } catch (Exception e) {
             Exceptions.printStackTrace(e);
             String message = NbBundle.getMessage(LanguageChooserTopComponent.class, "LC_langApplyError");
             NotifyDescriptor nd = new NotifyDescriptor.Message(message, NotifyDescriptor.ERROR_MESSAGE);

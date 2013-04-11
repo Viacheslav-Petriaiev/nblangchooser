@@ -21,7 +21,7 @@
               <Component id="languageCB" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="needShutDown" min="-2" max="-2" attributes="0"/>
+                  <Component id="needRestart" min="-2" max="-2" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Component id="saveButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -42,7 +42,7 @@
                   <Component id="warningLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="needShutDown" min="-2" max="-2" attributes="0"/>
+              <Component id="needRestart" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="236" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -78,11 +78,11 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="needShutDown">
+    <Component class="javax.swing.JCheckBox" name="needRestart">
       <Properties>
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/petriaiev/langchooser/Bundle.properties" key="LanguageChooserTopComponent.needShutDown.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/petriaiev/langchooser/Bundle.properties" key="LanguageChooserTopComponent.needRestart.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
