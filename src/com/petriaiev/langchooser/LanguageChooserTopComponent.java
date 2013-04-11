@@ -149,7 +149,7 @@ public final class LanguageChooserTopComponent extends TopComponent {
             final File commonConfigFileDir = new File(netbeansHome.getParentFile(), ETC_FOLDER_PATH);
             final File commonConfigFile = new File(commonConfigFileDir, CONF_FILE_NAME);
             try {
-                copyFile(userConfigFile, commonConfigFile);
+                copyFile(commonConfigFile, userConfigFile);
                 String title = NbBundle.getMessage(LanguageChooserTopComponent.class, "OpenIDE-Module-Name");
                 String message = NbBundle.getMessage(LanguageChooserTopComponent.class, "LC_userConfFileCreated");
                 NotificationDisplayer.getDefault().notify(title, new ImageIcon(), message, null);
